@@ -7,14 +7,106 @@ option objc_class_prefix = "HLW";
 
 package br.com.zup;
 
-service PixRestService {
-  rpc send (PixRestRequest) returns (PixRestReply) {}
+import "google/protobuf/timestamp.proto";
+
+service PixRestRegistrarService {
+  rpc registrar(RegistrarChaveRequest) returns (ChaveRegistradaResponse){}
 }
 
-message PixRestRequest {
-  string name = 1;
+service PixRestRemoveService {
+  rpc remover(RemoverChaveRequest) returns (RemoverChaveResponse){}
 }
 
-message PixRestReply {
-  string message = 1;
+service PixRestConsultarService{
+  rpc consultar(ConsultarChavePixRequest) returns (ConsultarChavePixResponse){}
+}
+
+service PixRestListarService{
+  rpc listar(ListarChavePixRequest) returns (ListarChavePixResponse){}
+}
+
+message RemoverChaveRequest{
+  string clienteId = 1;
+  string pixId = 2;
+}
+
+message RemoverChaveResponse{
+  string clienteId = 1;
+  string pixId = 2;
+}
+
+message RegistrarChaveRequest{
+  string clienteId = 1;
+  TipoChave tipoChave = 2;
+  string chave = 3;
+  TipoConta tipoConta = 4;
+}
+
+message ChaveRegistradaResponse{
+  string clienteId = 1;
+  string pixId = 2;
+}
+
+enum TipoChave{
+  UNKNOWN_CHAVE = 0;
+  CPF = 1;
+  CELULAR = 2;
+  EMAIL = 3;
+  ALEATORIA = 4;
+}
+
+enum TipoConta{
+  UNKNOWN_CONTA = 0;
+  CONTA_CORRENTE = 1;
+  CONTA_POUPANCA = 2;
+}
+
+message ConsultarChavePixRequest{
+  message FiltroPorPixId{
+    string clienteId = 1;
+    string pixId = 2;
+  }
+
+  oneof filtro{
+    FiltroPorPixId pixId = 1;
+    string chave = 2;
+  }
+}
+
+message ConsultarChavePixResponse{
+  message ChavePix{
+    message ContaInfo{
+      TipoConta tipoConta = 1;
+      string instituicao = 2;
+      string nomeTitular = 3;
+      string cpfTitular = 4;
+      string agencia = 5;
+      string numeroConta = 6;
+    }
+    TipoChave tipoChave = 1;
+    string chave = 2;
+    ContaInfo conta = 3;
+    google.protobuf.Timestamp criadoEm = 4;
+  }
+
+  string clienteId = 1;
+  string pixId = 2;
+  ChavePix chave = 3;
+}
+
+message ListarChavePixRequest{
+  string clienteId = 1;
+}
+
+message ListarChavePixResponse{
+  message ChavePix{
+    string pixId = 1;
+    TipoChave tipoChave = 2;
+    string chave = 3;
+    TipoConta tipoConta = 4;
+    google.protobuf.Timestamp criadoEm = 5;
+  }
+
+  string clienteId = 1;
+  repeated ChavePix listaChaves = 2;
 }
