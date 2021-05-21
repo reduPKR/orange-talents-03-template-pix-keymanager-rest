@@ -1,6 +1,6 @@
 package br.com.zup.validador
 
-import br.com.zup.pix.registrar.NovaChaveRequest
+import br.com.zup.pix.contaPix.registrar.NovaChaveRequest
 import io.micronaut.core.annotation.AnnotationValue
 import io.micronaut.validation.validator.constraints.ConstraintValidator
 import io.micronaut.validation.validator.constraints.ConstraintValidatorContext

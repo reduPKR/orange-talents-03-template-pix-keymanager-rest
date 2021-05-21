@@ -1,27 +1,27 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "br.com.zup";
-option java_outer_classname = "PixRest";
+option java_package = "br.com.zup.pix";
+option java_outer_classname = "PixServer";
 option objc_class_prefix = "HLW";
 
-package br.com.zup;
+package br.com.zup.pix;
 
 import "google/protobuf/timestamp.proto";
 
-service PixRestRegistrarService {
+service PixServerRegistrarService {
   rpc registrar(RegistrarChaveRequest) returns (ChaveRegistradaResponse){}
 }
 
-service PixRestRemoveService {
+service PixServerRemoveService {
   rpc remover(RemoverChaveRequest) returns (RemoverChaveResponse){}
 }
 
-service PixRestConsultarService{
+service PixServerConsultarService{
   rpc consultar(ConsultarChavePixRequest) returns (ConsultarChavePixResponse){}
 }
 
-service PixRestListarService{
+service PixServerListarService{
   rpc listar(ListarChavePixRequest) returns (ListarChavePixResponse){}
 }
 

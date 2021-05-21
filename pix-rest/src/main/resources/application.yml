@@ -1,15 +1,13 @@
 micronaut:
   application:
     name: pixRest
-  server:
-    port: 'localhost:8080'
 
 grpc:
   client:
     plaintext: true
     max-retry-attempts: 10
   channels:
-    pixRest:
-      address: 'localhost:50052'
+    pix:
+      address: 'localhost:50051'
       plaintext: true
       max-retry-attempts: 5

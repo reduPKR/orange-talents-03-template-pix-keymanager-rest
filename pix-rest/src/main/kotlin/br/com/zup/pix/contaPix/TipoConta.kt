@@ -1,4 +1,4 @@
-package br.com.zup.pix
+package br.com.zup.pix.contaPix
 
 enum class TipoConta {
     UNKNOWN_CONTA,

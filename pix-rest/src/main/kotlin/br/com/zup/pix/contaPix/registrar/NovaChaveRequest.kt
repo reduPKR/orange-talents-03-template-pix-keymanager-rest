@@ -1,11 +1,11 @@
-package br.com.zup.pix.registrar
+package br.com.zup.pix.contaPix.registrar
 
-import br.com.zup.RegistrarChaveRequest
-import br.com.zup.pix.TipoChave
-import br.com.zup.pix.TipoConta
+
+import br.com.zup.pix.RegistrarChaveRequest
+import br.com.zup.pix.contaPix.TipoChave
+import br.com.zup.pix.contaPix.TipoConta
 import br.com.zup.validador.ValidPixKey
 import io.micronaut.core.annotation.Introspected
-import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -19,15 +19,15 @@ class NovaChaveRequest(
     @field:NotNull
     val tipoConta: TipoConta?
 ) {
-    fun toModel(clienteId: String?): RegistrarChaveRequest{
+    fun toModel(clienteId: String?): RegistrarChaveRequest {
         val tipoChaveAux = tipoChave?.name ?: TipoChave.UNKNOWN_CHAVE.name
         val tipoContaAux = tipoConta?.name ?: TipoConta.UNKNOWN_CONTA.name
 
         return RegistrarChaveRequest.newBuilder()
             .setClienteId(clienteId)
-            .setTipoChave(br.com.zup.TipoChave.valueOf(tipoChaveAux))
+            .setTipoChave(br.com.zup.pix.TipoChave.valueOf(tipoChaveAux))
             .setChave(chave ?: "")
-            .setTipoConta(br.com.zup.TipoConta.valueOf(tipoContaAux))
+            .setTipoConta(br.com.zup.pix.TipoConta.valueOf(tipoContaAux))
             .build()
     }
 }

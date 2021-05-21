@@ -1,4 +1,4 @@
-package br.com.zup.pix
+package br.com.zup.pix.contaPix
 
 import br.com.zup.validador.ValidadorCPF
 import br.com.zup.validador.ValidadorEmail
