@@ -1,4 +1,4 @@
-package br.com.zup.pix.contaPix
+package br.com.zup.pix
 
 import br.com.zup.pix.PixServer
 import br.com.zup.pix.PixServerRegistrarServiceGrpc

@@ -1,6 +1,9 @@
 package br.com.zup.pix.contaPix.registrar
 
 import br.com.zup.pix.PixServerRegistrarServiceGrpc
+import br.com.zup.pix.contaPix.ErrorResponse
+import io.grpc.Status
+import io.grpc.StatusRuntimeException
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.Body
@@ -15,10 +18,10 @@ import javax.validation.Valid
 @Controller("/registrar/cliente/{clienteId}")
 class RegistrarChavePixController(
     @Inject val grpcClient: PixServerRegistrarServiceGrpc.PixServerRegistrarServiceBlockingStub
-    ) {
+) {
     @Post
     fun registar(@PathVariable clienteId: String, @Body @Valid request: NovaChaveRequest)
-    : HttpResponse<Any> {
+            : HttpResponse<Any> {
         val requestGrpc = request.toModel(clienteId)
 
         try {
@@ -26,11 +29,16 @@ class RegistrarChavePixController(
             return HttpResponse.created(
                 HttpResponse.uri("/registrar/pix/$clienteId/pix/${response.pixId}")
             )
-        }catch (e: Exception){
-            return HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        } catch (e: Exception) {
+            val statusCode = (e as StatusRuntimeException).status.code
+
+            return when (statusCode) {
+                Status.NOT_FOUND.code -> HttpResponse.notFound(ErrorResponse("Cliente: $clienteId não encontrado"))
+                Status.INVALID_ARGUMENT.code -> HttpResponse.badRequest(ErrorResponse("Dados invalidos"))
+                Status.ALREADY_EXISTS.code -> HttpResponse.unprocessableEntity<Any?>()
+                    .body(ErrorResponse("Cliente: $clienteId não encontrado"))
+                else -> HttpResponse.status<ErrorResponse?>(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse("Erro interno"))
+            }
         }
-
-
-
     }
 }

@@ -4,7 +4,7 @@ package br.com.zup.pix.contaPix.registrar
 import br.com.zup.pix.RegistrarChaveRequest
 import br.com.zup.pix.contaPix.TipoChave
 import br.com.zup.pix.contaPix.TipoConta
-import br.com.zup.validador.ValidPixKey
+import br.com.zup.pix.validador.ValidPixKey
 import io.micronaut.core.annotation.Introspected
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size

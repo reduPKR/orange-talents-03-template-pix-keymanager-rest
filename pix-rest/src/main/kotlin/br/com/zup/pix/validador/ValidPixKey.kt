@@ -1,4 +1,4 @@
-package br.com.zup.validador
+package br.com.zup.pix.validador
 
 import br.com.zup.pix.contaPix.registrar.NovaChaveRequest
 import io.micronaut.core.annotation.AnnotationValue
