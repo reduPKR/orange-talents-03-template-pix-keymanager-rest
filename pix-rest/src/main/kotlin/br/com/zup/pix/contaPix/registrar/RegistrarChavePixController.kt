@@ -36,8 +36,7 @@ class RegistrarChavePixController(
                 Status.NOT_FOUND.code -> HttpResponse.notFound(ErrorResponse("Cliente: $clienteId não encontrado"))
                 Status.INVALID_ARGUMENT.code -> HttpResponse.badRequest(ErrorResponse("Dados invalidos"))
                 Status.ALREADY_EXISTS.code -> HttpResponse.unprocessableEntity<Any?>()
-                    .body(ErrorResponse("Cliente: $clienteId não encontrado"))
-                else -> HttpResponse.status<ErrorResponse?>(HttpStatus.INTERNAL_SERVER_ERROR).body(ErrorResponse("Erro interno"))
+                else -> HttpResponse.serverError(ErrorResponse("Erro interno"))
             }
         }
     }
