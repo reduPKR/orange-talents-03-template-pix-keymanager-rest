@@ -14,4 +14,7 @@ class GrpcClientFactory(@GrpcChannel("pix") val channel: ManagedChannel) {
 
     @Singleton
     fun RemoverChave() = PixServerRemoveServiceGrpc.newBlockingStub(channel)
+
+    @Singleton
+    fun consultarChave() = PixServerConsultarServiceGrpc.newBlockingStub(channel)
 }
