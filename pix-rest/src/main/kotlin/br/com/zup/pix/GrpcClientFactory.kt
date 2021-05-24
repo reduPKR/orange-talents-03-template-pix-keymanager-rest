@@ -11,4 +11,7 @@ import javax.inject.Singleton
 class GrpcClientFactory(@GrpcChannel("pix") val channel: ManagedChannel) {
     @Singleton
     fun RegistrarChave() = PixServerRegistrarServiceGrpc.newBlockingStub(channel)
+
+    @Singleton
+    fun RemoverChave() = PixServerRemoveServiceGrpc.newBlockingStub(channel)
 }

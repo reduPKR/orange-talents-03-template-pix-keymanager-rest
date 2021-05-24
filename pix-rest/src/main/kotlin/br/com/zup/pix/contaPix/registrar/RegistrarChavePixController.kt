@@ -27,7 +27,7 @@ class RegistrarChavePixController(
         try {
             val response = grpcClient.registrar(requestGrpc)
             return HttpResponse.created(
-                HttpResponse.uri("/registrar/pix/$clienteId/pix/${response.pixId}")
+                HttpResponse.uri("/registrar/cliente/$clienteId/pix/${response.pixId}")
             )
         } catch (e: Exception) {
             val statusCode = (e as StatusRuntimeException).status.code
