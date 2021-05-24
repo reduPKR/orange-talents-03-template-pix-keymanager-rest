@@ -47,7 +47,7 @@ internal class RemoverChavePixControllerTest{
         Mockito.doReturn(responseGrpc).`when`(grpcClient).remover(Mockito.any())
 
         val chaveRequest = RemoverChaveRequest(clientId, pixId)
-        val request = HttpRequest.POST("/remover/chave",chaveRequest)
+        val request = HttpRequest.DELETE("/remover/chave",chaveRequest)
         val response = client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
 
         assertEquals(HttpStatus.OK, response.status)
@@ -60,7 +60,7 @@ internal class RemoverChavePixControllerTest{
         Mockito.doReturn(Status.NOT_FOUND).`when`(grpcClient).remover(Mockito.any())
 
         val chaveRequest = RemoverChaveRequest(clientId, pixId)
-        val request = HttpRequest.POST("/remover/chave",chaveRequest)
+        val request = HttpRequest.DELETE("/remover/chave",chaveRequest)
 
         val error = assertThrows<StatusRuntimeException> {
             client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
@@ -79,7 +79,7 @@ internal class RemoverChavePixControllerTest{
         Mockito.doReturn(Status.INVALID_ARGUMENT).`when`(grpcClient).remover(Mockito.any())
 
         val chaveRequest = RemoverChaveRequest(clientId, pixId)
-        val request = HttpRequest.POST("/remover/chave",chaveRequest)
+        val request = HttpRequest.DELETE("/remover/chave",chaveRequest)
 
         val error = assertThrows<StatusRuntimeException> {
             client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
@@ -98,7 +98,7 @@ internal class RemoverChavePixControllerTest{
         Mockito.doReturn(HttpResponse.serverError(ErrorResponse("Erro interno"))).`when`(grpcClient).remover(Mockito.any())
 
         val chaveRequest = RemoverChaveRequest(clientId, pixId)
-        val request = HttpRequest.POST("/remover/chave",chaveRequest)
+        val request = HttpRequest.DELETE("/remover/chave",chaveRequest)
 
         val error = assertThrows<StatusRuntimeException> {
             client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
