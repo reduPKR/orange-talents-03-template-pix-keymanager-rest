@@ -62,7 +62,7 @@ internal class RegistrarChavePixControllerTest{
     internal fun `nao deve cadastrar quando o cliente nao for encontrado`(){
         val clientId = UUID.randomUUID().toString()
 
-        doReturn(HttpResponse.notFound(ErrorResponse("Cliente: $clientId não encontrado"))).`when`(grpcClient).registrar(Mockito.any())
+        doReturn(Status.NOT_FOUND).`when`(grpcClient).registrar(Mockito.any())
 
         val chaveRequest = NovaChaveRequest(TipoChave.CPF, "738.274.864-24", TipoConta.CONTA_CORRENTE)
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
@@ -81,7 +81,7 @@ internal class RegistrarChavePixControllerTest{
     internal fun `nao deve cadastrar quando algum argumento for invalido`(){
         val clientId = UUID.randomUUID().toString()
 
-        doReturn(HttpResponse.badRequest(ErrorResponse("Dados invalidos"))).`when`(grpcClient).registrar(Mockito.any())
+        doReturn(Status.INVALID_ARGUMENT).`when`(grpcClient).registrar(Mockito.any())
 
         val chaveRequest = NovaChaveRequest(TipoChave.CPF, "738.274.864-24", TipoConta.CONTA_CORRENTE)
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
@@ -100,7 +100,7 @@ internal class RegistrarChavePixControllerTest{
     internal fun `nao deve cadastrar quando a chave já existir`(){
         val clientId = UUID.randomUUID().toString()
 
-        doReturn(HttpResponse.unprocessableEntity<Any>()).`when`(grpcClient).registrar(Mockito.any())
+        doReturn(Status.ALREADY_EXISTS).`when`(grpcClient).registrar(Mockito.any())
 
         val chaveRequest = NovaChaveRequest(TipoChave.CPF, "738.274.864-24", TipoConta.CONTA_CORRENTE)
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
@@ -128,7 +128,7 @@ internal class RegistrarChavePixControllerTest{
         }
 
         with(error){
-            assertEquals(Status.fromCodeValue(500).code, status.code)
+            assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, status.code)
         }
     }
 

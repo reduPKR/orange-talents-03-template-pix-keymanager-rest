@@ -5,6 +5,7 @@ import br.com.zup.pix.contaPix.ErrorResponse
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
@@ -30,8 +31,7 @@ class RemoverChavePixController(
             return when (statusCode) {
                 Status.NOT_FOUND.code -> HttpResponse.notFound(ErrorResponse("Chave pix não localizada"))
                 Status.INVALID_ARGUMENT.code -> HttpResponse.badRequest(ErrorResponse("Dados invalidos"))
-                Status.ALREADY_EXISTS.code -> HttpResponse.unprocessableEntity<Any?>()
-                else -> HttpResponse.serverError(ErrorResponse("Erro interno"))
+                else -> HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
             }
         }
     }
