@@ -24,11 +24,9 @@ class RemoverChavePixController(
 
         try {
             val response = grpcClient.remover(requestGrpc)
-            return HttpResponse.ok()
+            return HttpResponse.ok(RemoverChaveResponse(response.clienteId, response.pixId))
         }catch (e: Exception){
-            val statusCode = (e as StatusRuntimeException).status.code
-
-            return when (statusCode) {
+            return when ((e as StatusRuntimeException).status.code) {
                 Status.NOT_FOUND.code -> HttpResponse.notFound(ErrorResponse("Chave pix não localizada"))
                 Status.INVALID_ARGUMENT.code -> HttpResponse.badRequest(ErrorResponse("Dados invalidos"))
                 else -> HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)

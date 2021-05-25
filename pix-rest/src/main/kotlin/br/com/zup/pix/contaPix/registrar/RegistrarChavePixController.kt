@@ -30,9 +30,7 @@ class RegistrarChavePixController(
                 HttpResponse.uri("/registrar/cliente/$clienteId/pix/${response.pixId}")
             )
         } catch (e: Exception) {
-            val statusCode = (e as StatusRuntimeException).status.code
-
-            return when (statusCode) {
+            return when ((e as StatusRuntimeException).status.code) {
                 Status.NOT_FOUND.code -> HttpResponse.notFound(ErrorResponse("Cliente: $clienteId não encontrado"))
                 Status.INVALID_ARGUMENT.code -> HttpResponse.badRequest(ErrorResponse("Dados invalidos"))
                 Status.ALREADY_EXISTS.code -> HttpResponse.unprocessableEntity<Any?>()

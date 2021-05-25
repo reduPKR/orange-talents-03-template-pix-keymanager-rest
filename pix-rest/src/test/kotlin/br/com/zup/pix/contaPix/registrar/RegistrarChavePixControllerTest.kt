@@ -2,28 +2,24 @@ package br.com.zup.pix.contaPix.registrar
 
 import br.com.zup.pix.ChaveRegistradaResponse
 import br.com.zup.pix.GrpcClientFactory
-import br.com.zup.pix.PixServerListarServiceGrpc
 import br.com.zup.pix.PixServerRegistrarServiceGrpc
-import br.com.zup.pix.contaPix.ErrorResponse
 import br.com.zup.pix.contaPix.TipoChave
 import br.com.zup.pix.contaPix.TipoConta
-import io.grpc.ManagedChannel
+import br.com.zup.pix.contaPix.remover.RemoverChaveRequest
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import io.micronaut.context.annotation.Factory
 import io.micronaut.context.annotation.Replaces
-import io.micronaut.grpc.annotation.GrpcChannel
 import io.micronaut.http.HttpRequest
-import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.annotation.Client
-import io.micronaut.test.annotation.MockBean
+import io.micronaut.http.client.exceptions.HttpClientResponseException
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import org.mockito.Mockito.doReturn
 import java.util.*
@@ -49,7 +45,7 @@ internal class RegistrarChavePixControllerTest{
 
         doReturn(responseGrpc).`when`(grpcClient).registrar(Mockito.any())
 
-        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "738.274.864-24", TipoConta.CONTA_CORRENTE)
+        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "17714389591", TipoConta.CONTA_CORRENTE)
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
         val response = client.toBlocking().exchange(request, NovaChaveRequest::class.java)
 
@@ -62,18 +58,18 @@ internal class RegistrarChavePixControllerTest{
     internal fun `nao deve cadastrar quando o cliente nao for encontrado`(){
         val clientId = UUID.randomUUID().toString()
 
-        doReturn(Status.NOT_FOUND).`when`(grpcClient).registrar(Mockito.any())
+        Mockito.`when`(grpcClient.registrar(Mockito.any()))
+            .thenThrow(StatusRuntimeException(Status.NOT_FOUND)::class.java)
 
-        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "738.274.864-24", TipoConta.CONTA_CORRENTE)
+        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "73827486424", TipoConta.CONTA_CORRENTE)
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
 
-        val error = assertThrows<StatusRuntimeException> {
-            client.toBlocking().exchange(request, NovaChaveRequest::class.java)
+        val error = assertThrows<HttpClientResponseException> {
+            client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
         }
 
         with(error){
             assertEquals(Status.NOT_FOUND.code, status.code)
-            assertEquals("Cliente: $clientId não encontrado", status.description)
         }
     }
 
@@ -81,18 +77,18 @@ internal class RegistrarChavePixControllerTest{
     internal fun `nao deve cadastrar quando algum argumento for invalido`(){
         val clientId = UUID.randomUUID().toString()
 
-        doReturn(Status.INVALID_ARGUMENT).`when`(grpcClient).registrar(Mockito.any())
+        Mockito.`when`(grpcClient.registrar(Mockito.any()))
+            .thenThrow(StatusRuntimeException(Status.INVALID_ARGUMENT)::class.java)
 
-        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "738.274.864-24", TipoConta.CONTA_CORRENTE)
+        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "73827486424", TipoConta.CONTA_CORRENTE)
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
 
-        val error = assertThrows<StatusRuntimeException> {
-            client.toBlocking().exchange(request, NovaChaveRequest::class.java)
+        val error = assertThrows<HttpClientResponseException> {
+            client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
         }
 
         with(error){
-            assertEquals(Status.fromCodeValue(400).code, status.code)
-            assertEquals("Dados invalidos", status.description)
+            assertEquals(Status.INVALID_ARGUMENT.code, status.code)
         }
     }
 
@@ -100,17 +96,18 @@ internal class RegistrarChavePixControllerTest{
     internal fun `nao deve cadastrar quando a chave já existir`(){
         val clientId = UUID.randomUUID().toString()
 
-        doReturn(Status.ALREADY_EXISTS).`when`(grpcClient).registrar(Mockito.any())
+        Mockito.`when`(grpcClient.registrar(Mockito.any()))
+            .thenThrow(StatusRuntimeException(Status.ALREADY_EXISTS)::class.java)
 
-        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "738.274.864-24", TipoConta.CONTA_CORRENTE)
+        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "73827486424", TipoConta.CONTA_CORRENTE)
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
 
-        val error = assertThrows<StatusRuntimeException> {
-            client.toBlocking().exchange(request, NovaChaveRequest::class.java)
+        val error = assertThrows<HttpClientResponseException> {
+            client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
         }
 
         with(error){
-            assertEquals(Status.fromCodeValue(422).code, status.code)
+            assertEquals(Status.ALREADY_EXISTS.code, status.code)
         }
     }
 
@@ -118,17 +115,18 @@ internal class RegistrarChavePixControllerTest{
     internal fun `nao deve cadastrar se ocorrer algum erro`(){
         val clientId = UUID.randomUUID().toString()
 
-        doReturn(HttpResponse.serverError(ErrorResponse("Erro interno"))).`when`(grpcClient).registrar(Mockito.any())
+        Mockito.`when`(grpcClient.registrar(Mockito.any()))
+            .thenThrow(StatusRuntimeException::class.java)
 
-        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "738.274.864-24", TipoConta.CONTA_CORRENTE)
+        val chaveRequest = NovaChaveRequest(TipoChave.CPF, "73827486424", TipoConta.CONTA_CORRENTE)
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
 
-        val error = assertThrows<StatusRuntimeException> {
-            client.toBlocking().exchange(request, NovaChaveRequest::class.java)
+        val error = assertThrows<HttpClientResponseException> {
+            client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
         }
 
         with(error){
-            assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, status.code)
+            assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.code, status.code)
         }
     }
 
