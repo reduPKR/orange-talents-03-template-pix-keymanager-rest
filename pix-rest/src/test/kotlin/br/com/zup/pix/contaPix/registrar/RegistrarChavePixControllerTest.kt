@@ -5,7 +5,6 @@ import br.com.zup.pix.GrpcClientFactory
 import br.com.zup.pix.PixServerRegistrarServiceGrpc
 import br.com.zup.pix.contaPix.TipoChave
 import br.com.zup.pix.contaPix.TipoConta
-import br.com.zup.pix.contaPix.remover.RemoverChaveRequest
 import io.grpc.Status
 import io.grpc.StatusRuntimeException
 import io.micronaut.context.annotation.Factory
@@ -65,7 +64,7 @@ internal class RegistrarChavePixControllerTest{
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
 
         val error = assertThrows<HttpClientResponseException> {
-            client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
+            client.toBlocking().exchange(request, NovaChaveRequest::class.java)
         }
 
         with(error){
@@ -84,7 +83,7 @@ internal class RegistrarChavePixControllerTest{
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
 
         val error = assertThrows<HttpClientResponseException> {
-            client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
+            client.toBlocking().exchange(request, NovaChaveRequest::class.java)
         }
 
         with(error){
@@ -103,7 +102,7 @@ internal class RegistrarChavePixControllerTest{
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
 
         val error = assertThrows<HttpClientResponseException> {
-            client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
+            client.toBlocking().exchange(request, NovaChaveRequest::class.java)
         }
 
         with(error){
@@ -122,7 +121,7 @@ internal class RegistrarChavePixControllerTest{
         val request = HttpRequest.POST("/registrar/cliente/$clientId",chaveRequest)
 
         val error = assertThrows<HttpClientResponseException> {
-            client.toBlocking().exchange(request, RemoverChaveRequest::class.java)
+            client.toBlocking().exchange(request, NovaChaveRequest::class.java)
         }
 
         with(error){
