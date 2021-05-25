@@ -217,7 +217,6 @@ internal class ConsultarChaveControllerTest{
         }
     }
 
-
     @Factory
     @Replaces(factory = GrpcClientFactory::class)
     internal class Clients{
