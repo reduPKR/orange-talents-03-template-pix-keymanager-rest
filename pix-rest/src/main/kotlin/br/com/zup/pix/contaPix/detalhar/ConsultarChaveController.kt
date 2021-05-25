@@ -46,9 +46,8 @@ class ConsultarChaveController(
             val response = grpcClient.consultar(requestGrpc)
             return HttpResponse.ok(ConsultaResponse(response))
         }catch (e: Exception){
-            val statusCode = (e as StatusRuntimeException).status.code
 
-            return when (statusCode) {
+            return when ((e as StatusRuntimeException).status.code) {
                 Status.NOT_FOUND.code -> HttpResponse.notFound(ErrorResponse("Chave PIX não encontrado"))
                 Status.INVALID_ARGUMENT.code -> HttpResponse.badRequest(ErrorResponse("Argumentos invalidos"))
                 else -> HttpResponse.status(HttpStatus.INTERNAL_SERVER_ERROR)
