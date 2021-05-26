@@ -1,0 +1,7 @@
+#configurações para o keymanager grpc (no meu caso pix grpc)
+keymanager.grpc:
+  DB_URI: "jdbc:postgresql://external-pix-services:5432/pix"
+  DB_USER: "pix-rest"
+  DB_DIALECT: "POSTGRES"
+  ITAU_URL: "http://external-pix-services:9091"
+  BCB_URL: "http://external-pix-services:8082"
