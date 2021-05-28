@@ -13,7 +13,7 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-
-artifacts:
-  files:
-    - target/*.jar
+#Deixei comentado pois com artifacts ele esta falhando
+#artifacts:
+#  files:
+#    - 'build/libs/*.jar'
