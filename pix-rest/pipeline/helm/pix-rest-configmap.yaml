@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-configmap
+data:
+  DB_URI: jdbc:postgresql://external-pix-services:5432/pix
+  DB_USER: pix-rest
+  DB_DIALECT: POSTGRES
+  ITAU_URL: http://external-pix-services:9091
+  BCB_URL: http://external-pix-services:8082
