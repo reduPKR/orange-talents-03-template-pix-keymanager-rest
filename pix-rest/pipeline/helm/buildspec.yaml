@@ -7,7 +7,6 @@ phases:
   pre_build:
     commands:
       - echo skipped on `date`
-      - gadle clean
   build:
     commands:
       - java -version
@@ -17,4 +16,4 @@ phases:
 
 artifacts:
   files:
-    - '*-all.jar'
+    - target/pix.jar
