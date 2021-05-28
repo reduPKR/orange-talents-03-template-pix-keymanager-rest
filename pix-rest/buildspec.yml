@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: correto11
+  pre_build:
+    commands:
+      - echo skipped on `date`
+      - gadle clean
+  build:
+    commands:
+      - java -version
+  post_build:
+    commands:
+      - echo Build completed on `date`
+
+artifacts:
+  files:
+    - '*-all.jar'
