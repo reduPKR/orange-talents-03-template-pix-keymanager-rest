@@ -6,10 +6,10 @@ phases:
       java: corretto11
   pre_build:
     commands:
-      - echo skipped on `date`
+      - echo Nothing to do in the pre_build phase...
   build:
     commands:
-      - java -version
+      - echo Build started on `date`
   post_build:
     commands:
       - echo Build completed on `date`
