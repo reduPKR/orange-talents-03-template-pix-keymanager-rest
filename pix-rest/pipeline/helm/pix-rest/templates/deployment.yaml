@@ -47,9 +47,9 @@ spec:
               port: http
           envFrom:
             - configMapRef:
-                name: pix-rest-configmap.yaml
+                name: db-configmap
             - secretRef:
-                name: pix-rest-secrets.yaml
+                name: db-secret
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

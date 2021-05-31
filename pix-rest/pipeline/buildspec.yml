@@ -13,7 +13,6 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-#Deixei comentado pois com artifacts ele esta falhando
-#artifacts:
-#  files:
-#    - 'build/libs/*.jar'
+artifacts:
+  files:
+    - target/pix-rest.jar
