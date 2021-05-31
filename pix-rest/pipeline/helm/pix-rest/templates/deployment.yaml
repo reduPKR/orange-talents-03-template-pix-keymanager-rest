@@ -45,6 +45,11 @@ spec:
             httpGet:
               path: /
               port: http
+          envFrom:
+            - configMapRef:
+                name: pix-rest-configmap.yaml
+            - secretRef:
+                name: pix-rest-secrets.yaml
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
